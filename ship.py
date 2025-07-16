@@ -1,5 +1,4 @@
 import pygame
-import settings
 
 class Ship:
     """A class to represent the player's Shooting Ship"""
@@ -8,7 +7,7 @@ class Ship:
         """Initialize the ship and set its starting position"""
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
-        self.settings = settings.Settings()
+        self.settings = ai_game.settings
 
         #Load the ship image and get its rect
         self.image = pygame.image.load('images/ship.bmp')
@@ -17,6 +16,9 @@ class Ship:
 
         #Start each new ship at the bottom center of the screen
         self.rect.midbottom = self.screen_rect.midbottom
+
+        #Store a decimal value instead of an integer for ship's horizontal coordinate
+        self.x = float(self.rect.x)
 
         #Movement flags
         self.move_right = False
@@ -29,10 +31,14 @@ class Ship:
     def update(self):
         """Update the ship's position based on the movement flags"""
         if self.move_right:
-            self.rect.x += 1
+            self.x += self.settings.ship_speed
             if self.rect.right > self.settings.screen_width:
                 self.rect.right = self.settings.screen_width
         if self.move_left:
-            self.rect.x -= 1
+            self.x -= self.settings.ship_speed
             if self.rect.left < 0:
                 self.rect.left = 0
+        
+        #update the rect object from self.x
+        self.rect.x = self.x
+        
