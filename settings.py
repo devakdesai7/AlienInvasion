@@ -17,3 +17,11 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)    
         self.bullets_allowed = 3
+
+        #Alien settings 
+        self.alien_speed = 1.0
+        #self.fleet_drop_speed is the fleet's speed of coming down the screen when one of the aliens in the fleet touches any of the edges in horizontal motion
+        self.fleet_drop_speed = 8
+        #self.fleet_direction represents the fleet's direction where fleet_direction = 1 shows that the fleet is moving right and fleet_direction = -1 shows that the fleet is moving left
+        self.fleet_direction = 1
+
