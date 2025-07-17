@@ -52,7 +52,7 @@ class AlienInvasion:
             self.ship.move_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.move_left = True
-        elif event.key == pygame.K_q:
+        elif event.key == pygame.K_ESCAPE:
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -77,8 +77,31 @@ class AlienInvasion:
                 self.bullets.remove(bullet)
 
     def _create_fleet(self):
+        """Create the fleet of aliens"""
+        #Create an alien and find the number of aliens in a row
+        #Spacing between each alien is equal to one alien width
         alien = Alien(self)
-        self.aliens.add(alien)
+        alien_width, alien_height = alien.rect.size
+        available_space_x = self.settings.screen_width - (2 *alien_width)
+        number_of_aliens = available_space_x // (2 * alien_width)
+
+        #Determining the number of rows that can fit into the screen
+        available_vertical_space = self.settings.screen_height - (3 * alien_height) - (self.ship.rect.height)
+        number_of_rows = available_vertical_space // (2 * alien_height)
+
+        #Create the full fleet of the aliens
+        for number_row in range(number_of_rows):
+            for alien_number in range(number_of_aliens):
+                self._create_alien(alien_number, number_row)
+
+    def _create_alien(self, alien_number, number_row):
+         #Create an alien and place it in the first row
+            alien = Alien(self)
+            alien_width, alien_height = alien.rect.size
+            alien.x = alien_width + (2 * alien_width * alien_number)
+            alien.rect.x = alien.x
+            alien.rect.y = alien_height + (2 * alien_height * number_row)
+            self.aliens.add(alien)      
 
     def _update_screen(self):
         #Redraw the screen through each pass of the loop
