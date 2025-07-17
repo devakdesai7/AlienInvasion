@@ -77,8 +77,19 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
-        #check if any bullet collided with any alien, if yes, destroy that bullet and alien
+        self._check_bullet_alien_collisions()
+
+    def _check_bullet_alien_collisions(self):
+        """check if any bullet collided with any alien, if yes, destroy that bullet and alien"""
+        
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        #Note that collisions is of type dictionary which holds key-value pairs, in this case, the keys
+        #are the bullets and values are the aliens that get destroyed and the last two parameters 'True'
+        #tells the program to remove the bullet and the alien from the screen that gets collided
+
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
 
     def _update_alien(self):
         """Check if an alien is at an edge and appropriately 
