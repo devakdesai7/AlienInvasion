@@ -26,7 +26,7 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
             self._update_screen()
 
         
@@ -50,8 +50,7 @@ class AlienInvasion:
             self.ship.move_left = True
         elif event.key == pygame.K_q:
             sys.exit()
-
-        if event.key == pygame.K_SPACE:
+        elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
     def _check_keyup_events(self, event):
@@ -62,20 +61,25 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create new bullet and add it to the bullets group"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        self.bullets.update()
+
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         #Redraw the screen through each pass of the loop
         self.screen.fill(self.settings.bg_color)
-
         #Draw the ship to the game window
         self.ship.blitme()
-
         #Draw bullets from the self.bullets.sprites list to shoot
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
-
         #Make the most recently drawn screen visible
         pygame.display.flip()
 
