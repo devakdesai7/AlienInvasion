@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion:
     """Overall class which will contain the game logic and game loop"""
@@ -20,6 +21,9 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self._create_fleet()
 
     def run_game(self):
         """Start the main loop of the game"""
@@ -72,14 +76,24 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
 
+    def _create_fleet(self):
+        alien = Alien(self)
+        self.aliens.add(alien)
+
     def _update_screen(self):
         #Redraw the screen through each pass of the loop
         self.screen.fill(self.settings.bg_color)
+
         #Draw the ship to the game window
         self.ship.blitme()
+
         #Draw bullets from the self.bullets.sprites list to shoot
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+
+        #Draw alien fleet on the screen from the self.aliens group
+        self.aliens.draw(self.screen)
+        
         #Make the most recently drawn screen visible
         pygame.display.flip()
 
