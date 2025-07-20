@@ -1,5 +1,9 @@
 import sys
+from time import sleep
+
 import pygame
+
+from game_stats import GameStats
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
@@ -22,6 +26,7 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.stats = GameStats(self)
 
         self._create_fleet()
 
@@ -81,7 +86,7 @@ class AlienInvasion:
 
     def _check_bullet_alien_collisions(self):
         """check if any bullet collided with any alien, if yes, destroy that bullet and alien"""
-        
+
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
         #Note that collisions is of type dictionary which holds key-value pairs, in this case, the keys
         #are the bullets and values are the aliens that get destroyed and the last two parameters 'True'
@@ -96,6 +101,11 @@ class AlienInvasion:
         update the positions of all aliens in a fleet"""
         self._check_edges()
         self.aliens.update()
+
+        #check for any alien-ship collision
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+
 
     def _check_edges(self):
         """Return true if alien is at any one of the edge"""
@@ -134,7 +144,23 @@ class AlienInvasion:
             alien.x = alien_width + (2 * alien_width * alien_number)
             alien.rect.x = alien.x
             alien.rect.y = alien_height + (2 * alien_height * number_row)
-            self.aliens.add(alien)      
+            self.aliens.add(alien)     
+
+    def _ship_hit(self):
+        #Decrement the number of ships left by 1 
+        self.stats.ships_left -= 1
+
+        #Remove any bullets or aliens present on the screen and center the ship
+        self.aliens.empty()
+        self.bullets.empty()
+        self.ship.center_ship()
+        self._create_fleet()
+
+        #Pause
+        sleep(1)
+
+    def check_aliens_bottom(self):
+        """Check if any aliens have reached the bottom of the screen"""
 
     def _update_screen(self):
         #Redraw the screen through each pass of the loop
