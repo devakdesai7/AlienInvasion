@@ -8,6 +8,7 @@ from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from button import Button
 
 class AlienInvasion:
     """Overall class which will contain the game logic and game loop"""
@@ -27,6 +28,7 @@ class AlienInvasion:
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self.stats = GameStats(self)
+        self.play_button = Button(self, 'Play')
 
         self._create_fleet()
 
@@ -39,7 +41,7 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_alien()
-                
+
             self._update_screen()
 
         
@@ -189,6 +191,10 @@ class AlienInvasion:
 
         #Draw alien fleet on the screen from the self.aliens group
         self.aliens.draw(self.screen)
+
+        #Drawing the play button on the screen if game_active = False
+        if not self.stats.game_active:
+            self.play_button.draw_button()
         
         #Make the most recently drawn screen visible
         pygame.display.flip()
