@@ -113,6 +113,8 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+            self.stats.current_level += 1
+            self.sb.prep_current_level()
 
     def _update_alien(self):
         """Check if an alien is at an edge and appropriately 
