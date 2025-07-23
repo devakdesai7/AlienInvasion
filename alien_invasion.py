@@ -173,6 +173,7 @@ class AlienInvasion:
         #Decrement the number of ships left by 1 
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
 
             #Remove any bullets or aliens present on the screen and center the ship
             self.aliens.empty()
@@ -202,6 +203,8 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             self.stats._reset_stats()
             self.sb.prep_score()
+            self.sb.prep_current_level()
+            self.sb.prep_ships()
             self.stats.game_active = True
 
             #Get rid of any remaining aliens and bullets
