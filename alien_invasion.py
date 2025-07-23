@@ -103,6 +103,10 @@ class AlienInvasion:
         #are the bullets and values are the aliens that get destroyed and the last two parameters 'True'
         #tells the program to remove the bullet and the alien from the screen that gets collided
 
+        if collisions:
+            self.stats.score += self.settings.alien_points
+            self.sb.prep_score()
+            
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
@@ -191,6 +195,7 @@ class AlienInvasion:
         button_clicked = self.play_button.rect.collidepoint(mouse_pos) 
         if button_clicked and not self.stats.game_active:
             self.stats._reset_stats()
+            self.sb.prep_score()
             self.stats.game_active = True
 
             #Get rid of any remaining aliens and bullets

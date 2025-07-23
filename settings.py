@@ -26,3 +26,6 @@ class Settings:
         #self.fleet_direction represents the fleet's direction where fleet_direction = 1 shows that the fleet is moving right and fleet_direction = -1 shows that the fleet is moving left
         self.fleet_direction = 1
 
+        #Scoring 
+        self.alien_points = 50
+
