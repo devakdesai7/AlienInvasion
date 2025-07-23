@@ -104,7 +104,8 @@ class AlienInvasion:
         #tells the program to remove the bullet and the alien from the screen that gets collided
 
         if collisions:
-            self.stats.score += self.settings.alien_points
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             
         if not self.aliens:
